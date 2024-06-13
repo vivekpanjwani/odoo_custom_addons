@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="event_form" model="ir.ui.view">
+            <field name="name">event.event.form</field>
+            <field name="model">event.event</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(event_attendee_action)d" type="action" string="Attendees" class="oe_stat_button" attrs="{'invisible': [('attendee_count', '=', 0)]}">
+                                <field name="attendee_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="organizer_id"/>
+                            <field name="duration"/>
+                            <field name="attendee_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="event_tree" model="ir.ui.view">
+            <field name="name">event.event.tree</field>
+            <field name="model">event.event</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="organizer_id"/>
+                    <field name="attendee_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="duration"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Event Action -->
+        <record id="event_action" model="ir.actions.act_window">
+            <field name="name">Event Management</field>
+            <field name="res_model">event.event</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Event Main Menu -->
+        <menuitem id="event_management_main_menu" name="Event Management" web_icon="event_management,static/description/odoo_icon_event.png"/>
+
+        <!-- Event Management Menu -->
+        <menuitem id="event_menu" name="Event" parent="event_management_main_menu" action="event_action"/>
+
+        <!-- Event Registration Menu -->
+        <menuitem id="event_registration_menu" name="Event Registration" parent="event_management_main_menu" action="event_registration_action"/>
+
+        <!-- Event Attendee Menu -->
+        <menuitem id="event_attendee_menu" name="Event Attendee" parent="event_management_main_menu" action="event_attendee_action"/>
+
+        <!-- Event Organizer Menu -->
+        <menuitem id="event_organizer_menu" name="Event Organizer" parent="event_management_main_menu" action="event_organizer_action"/>
+
+        <menuitem id="report_menu" name="Registration Report" parent="event_management_main_menu"/>
+
+    </data>
+</odoo>

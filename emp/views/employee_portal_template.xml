@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="portal_my_home_menu_emp" name="Portal layout : employee enteries" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+			<li t-if="page_name == 'employee' or employee_model and employee_model.states != 'relieved'" t-attf-class="breadcrumb-item #{'active ' if not employee_model else ''}">
+				<a t-if="employee_model" t-attf-href="/my/employees?{{ keep_query() }}">Employees</a>
+				<t t-else="">Employees</t>
+			</li>
+			<li t-if="employee_model" class="breadcrumb-item active">
+				<t t-esc="employee_model.employee_code"/>
+			</li>
+        </xpath>
+    </template>
+    <template id="portal_my_home_employee_new" name="Employees" customize_show="True" inherit_id="portal.portal_my_home">
+   		<xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+       		<t t-call="portal.portal_docs_entry">
+           		<t t-set="title">Employees</t>
+           		<t t-set="url" t-value="'/my/employees'"/>
+          		<t t-set="placeholder_count" t-value="'employee_count'"/>
+       		</t>
+   		</xpath>
+	</template>	
+	<template id="portal_my_employees" name="My Employees">
+	    <t t-call="portal.portal_layout">
+	        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+	        <t t-call="portal.portal_searchbar">
+	            <t t-set="title">Employees</t>
+	        </t>
+	        <t t-call="portal.portal_table">
+	            <t t-foreach="employees" t-as="employee_group">
+	                <thead>
+	                     <tr t-if="groupby == 'city'" class="table-active">
+	                        <th class="text-center" colspan="6"><span t-out="employee_group['city'].name"/></th>
+	                    </tr>
+	                    <tr t-if="groupby == 'manager_id'" class="table-active">
+	                        <th class="text-center" colspan="6"><span t-out="employee_group['manager_id'].name"/></th>
+	                    </tr>
+	                    <tr class="active">
+	                        <th class="text-start">Employee Code</th>
+	                        <th class="text-start">Name</th>
+	                        <th class="text-start">DOB</th>
+	                        <th class="text-center">States</th>
+	                        <th class="text-center" t-if="groupby != 'city'">City</th>
+	                        <th class="text-center" t-if="groupby != 'manager_id'">Manager</th>
+	                        <th class="text-center">Age</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <t t-foreach="employee_group['employees']" t-as="employee">
+	                        <tr class="active">
+	                            <td><a t-att-href="employee.get_portal_url()"><t t-out="employee.employee_code"/></a></td>
+	                            <td class="text-start"><t t-out="employee.name"/></td>
+	                            <td class="text-start"><t t-out="employee.dob"/></td>
+	                            <td class="text-center"><t t-out="employee.states"/></td>
+	                            <td class="text-center" t-if="groupby != 'city'"><t t-out="employee.city.name"/></td>
+   	                            <td class="text-center" t-if="groupby != 'manager_id'"><t t-out="employee.manager_id.name"/></td>
+	                            <td class="text-center"><t t-out="employee.age"/></td>
+	                        </tr>
+	                    </t>
+	                </tbody>
+	            </t>
+	        </t>
+	    </t>
+	</template>
+
+	<template id="employee_portal_page_template" name="Employee Portal Page Template" inherit_id="portal.portal_sidebar" primary="True">
+    <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+        <div class="row mt-5 o_portal_emp_sidebar">
+            <!-- Sidebar -->
+            <t t-call="portal.portal_record_sidebar">
+                <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                <t t-set="title">
+					<t t-if="employee_model.image">
+						<t t-if="employee_model.image">
+						    <img t-att-src="image_data_uri(employee_model.image)" style="max-height: 6rem; max-width: 100%; border-radius: 30px; display: block; margin: 0 auto; margin-bottom: 10px;"/>
+						</t>
+					    <br/>
+					    <h4><t t-if="employee_model.name"><t t-out="employee_model.name"></t></t></h4>
+					</t>
+                </t>
+                <t t-set="entries">
+                    <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                        <li class="list-group-item d-flex align-items-start flex-column flex-lg-row">
+                            <div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                            	<div class="o_download_pdf btn-toolbar flex-sm-nowrap">
+                                    <div class="btn-group flex-grow-1 me-1 mb-1">
+                                        <a class="btn btn-secondary o_print_btn o_portal_invoice_print" t-att-href="employee_model.get_portal_url(report_type='pdf')" id="print_invoice_report" title="Print" target="_blank"><i class="fa fa-print"/> Print</a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+		                                <a class="btn btn-secondary o_print_btn o_portal_invoice_print" t-attf-href="/edit/webemployee/{{ employee_model.id }}" title="Edit"><i class="fa fa-edit me-1"/> Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="navspy list-group-item ps-0 flex-grow-1" t-ignore="true" role="complementary">
+                            <ul class="nav flex-column bs-sidenav"></ul>
+                        </li>
+                    </ul>
+                </t>
+            </t>
+            <!-- Page content -->
+            <div id="employee_content" class="col-12 col-lg justify-content-end">
+                <!-- main content -->
+                <div id="portal_emp_content">
+                    <div t-call="emp.emp_model_portal_content"/>
+                </div>
+                <!-- chatter -->
+                <div id="emp_model_communication" class="mt-4">
+                    <h3>History</h3>
+                    <t t-call="portal.message_thread"/>
+                </div>
+            </div><!-- // #quote_content -->
+        </div>
+    </xpath>
+</template>
+
+	<template id="emp_model_portal_content" name="Employee Model Page Content">
+	    <!-- Intro -->
+	    <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+	        <h3 class="my-0">
+	            <t t-out="employee_model.employee_code"/>
+	        </h3>
+	    </div>
+
+	    <div t-attf-class="#{'card-body' if report_type == 'html' else ''}">
+	        <!-- Informations -->
+	        <div id="informations">
+	            <div class="row" id="employee_model.id">
+	                <div class="mb-3 row col-12">
+	                    <t t-if="employee_model.employee_code">
+	                        <h4 class="d-block mb-1">Address:</h4>
+	                        <span class="col-md-6" t-field="employee_model.street"/>
+	                        <span class="col-md-6" t-field="employee_model.street2"/>
+	                        <span class="col-md-6" t-field="employee_model.city"/>
+	                        <span class="col-md-6" t-field="employee_model.state_id.name"/>
+	                        <span class="col-md-6" t-field="employee_model.country_id.name"/>
+	                    </t>
+	                    <h4 class="col-md-12">Information:</h4>
+	                    <div class="col-md-6">
+	                        <strong>Date Of Birth:</strong>
+	                        <span t-field="employee_model.dob" t-options='{"widget": "date"}'/>
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Joining Date:</strong>
+	                        <span t-field="employee_model.joining_date"/>
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Status:</strong>
+	                        <span t-field="employee_model.tag_ids"/>  
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Gender:</strong>
+	                        <span t-field="employee_model.gender"/>  
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Basic Earning:</strong>
+	                        <span t-field="employee_model.basic_salary"/>  
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Gross Earning:</strong>
+	                        <span t-field="employee_model.gross_salary"/>  
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Net Salary:</strong>
+	                        <span t-field="employee_model.net_salary"/>                     
+	                    </div>
+	                    <div class="col-md-6">
+	                        <strong>Commission:</strong>
+	                        <span t-field="employee_model.commision"/> 
+	                    </div> 
+	                </div>
+	            </div>
+	        </div>
+		</div>
+	</template>        
+</odoo>

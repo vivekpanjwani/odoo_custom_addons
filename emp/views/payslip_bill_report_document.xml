@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="payslip_bill_report_document">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                <t t-set="emp_model" t-value="emp_model_data.get(o.id)"/>
+                    <!-- Header Section -->
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 t-esc="o.company_id.name" style="float: left;"/>
+                            </div>
+                            <div class="col-6">
+                                <img t-if="o.company_id.logo" t-attf-src="data:image/*;base64,{{o.company_id.logo}}" class="img img-fluid" style="max-height: 50px; float: right;"/>
+
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <h4 t-esc="o.company_id.country_id.name" style="float: left;"/>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <h4 t-if="o.invoice_date">Payslip for the month of <span t-esc="o.invoice_date.strftime('%B %Y')"/></h4>
+                            </div>
+                        </div>
+
+                        <!-- Employee Pay Summary -->
+                        <table class="table table-bordered mt-3">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">
+                                        <h5>Employee Pay Summary</h5>
+                                        <p>Employee Name: <span t-esc="o.partner_id.name"/></p>
+                                        <p t-if="emp_model">Date of Joining: <span t-esc="emp_model['joining_date']"/></p>
+                                    </th>
+                                    <th colspan="2">
+                                        <p class="text-center">Employee Net Pay</p>
+                                        <h4 class="text-center">
+                                            <span t-if="emp_model">
+                                                <span t-esc="o.currency_id.symbol"/> 
+                                                <span t-esc="emp_model['gross_salary']"/>
+                                            </span>
+                                        </h4>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <!-- Earnings and Deductions Table -->
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Earnings</th>
+                                    <th class="text-right">Amount</th>
+                                    <th class="text-right">YTD</th>
+                                    <th>Commissions</th>
+                                    <th class="text-right">Amount</th>
+                                    <th class="text-right">YTD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Basic</td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['basic_salary']"/></td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['basic_salary']"/></td>
+                                    <td>Professional Tax</td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['commision']"/></td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['commision']"/></td>
+                                </tr>
+                                <tr>
+                                    <td>House Rent Allowance</td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['extra_allowances']"/></td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['extra_allowances']"/></td>
+                                    <td></td>
+                                    <td class="text-right"></td>
+                                    <td class="text-right"></td>
+                                </tr>
+                                <tr>
+                                    <td>Fixed Allowance</td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['extra_allowances']"/></td>
+                                    <td class="text-right"><span t-if="emp_model" t-esc="emp_model['extra_allowances']"/></td>
+                                    <td></td>
+                                    <td class="text-right"></td>
+                                    <td class="text-right"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gross Earnings</strong></td>
+                                    <td class="text-right"><strong><span t-if="emp_model" t-esc="emp_model['gross_salary']"/></strong></td>
+                                    <td class="text-right"><strong><span t-if="emp_model" t-esc="emp_model['gross_salary']"/></strong></td>
+                                    <td><strong>Total Commission</strong></td>
+                                    <td class="text-right"><strong><span t-if="emp_model" t-esc="emp_model['commision']"/></strong></td>
+                                    <td class="text-right"><strong><span t-if="emp_model" t-esc="emp_model['commision']"/></strong></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><strong>NET PAY</strong></td>
+                                    <td colspan="2"><strong>Amount</strong></td>     
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Net Pay Summary -->
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th colspan="4" class="text-right">Gross Earnings</th>
+                                    <td colspan="2">
+                                        <span t-if="emp_model"> 
+                                            <span t-esc="emp_model['gross_salary']"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="4" class="text-right">Total Commission</th>
+                                    <td colspan="2">
+                                        <span t-if="emp_model">
+                                            <span t-esc="emp_model['commision']"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>                                                                 
+                                    <th colspan="4" class="text-right">Total Net Payable</th>
+                                    <td class="text-right" colspan="2">
+                                        <span t-if="emp_model">
+                                            <span t-esc="o.currency_id.symbol"/> 
+                                            <span t-esc="emp_model['net_salary']"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th colspan="6" class="text-center">
+                                        <p>Total Net Payable (in words):</p>
+                                        <h4 class="text-center">
+                                            <span t-if="emp_model">
+                                                <span t-esc="o.currency_id.symbol"/> 
+                                                <span t-esc="emp_model['net_salary']"/>
+                                            </span>
+                                        </h4>
+                                        <p t-if="emp_model" t-esc="o.currency_id.amount_to_text(emp_model['net_salary'])"/>
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p class="text-center text-muted mt-5">-- This document has been automatically generated by Zoho Payroll; therefore, a signature is not required. --</p>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_payslip">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                  <t t-set="emp_model" t-value="emp_model_data.get(o.id)"/>
+                  <t t-call="emp.payslip_bill_report_document" t-lang="o.partner_id.lang"/>
+              </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="template_sale_commission_details">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+					<t t-if="o.reportby == 'by_salesperson'">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="bg-warning">
+                                    <th colspan="2" >Sale Commission Summary by Salesperson</th>
+                                </tr>
+                                <tr class="table-warning"> 
+                                    <td>Salesperson</td>
+                                    <td>Commission Amount</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="users" t-as="user">
+                                    <tr>
+                                        <td><span t-esc="user.name"></span></td>
+                                        <t t-if='user.id in report_data'>
+                                        <td><span t-esc="report_data[user.id]"></span></td>
+                                    </t>
+                                    </tr>
+                                </t>
+                                <tr class="table-danger">
+                                    <td><strong>Total Commission</strong></td>
+                                    <td><strong><span t-esc="round(total_commissions,2)"/></strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+					<table class="table table-bordered mt-3">
+                        <thead>
+                            <tr class="bg-warning">
+                                <th colspan="4">Order Commission Summary</th>
+                            </tr>
+                            <tr class="table-warning">
+                                <td>Sales Order</td>
+                                <td>Commission %</td>
+                                <td>Order Total</td>
+                                <td>Order Commission</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="new_report_data.items()" t-as="item">
+                                <tr class="table-success">
+                                    <td>
+                                        <span t-esc="item[0]"></span>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td class="bg-success">
+                                        <span t-esc="item[1]['total_commission']"></span>
+                                    </td>
+                                </tr>
+                                <t t-foreach="item[1]['data']" t-as="order">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="order['order_id']"></span>
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['commission_percentage']"></span>
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['order_total']"></span>
+                                        </td>
+                                        <td>
+                                            <span t-esc="order['commission_amount']"></span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+				</t>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_commission">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                  <t t-call="sale_commission.template_sale_commission_details"/>
+              </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Employee Designation List View-->
+        <record id="view_employee_designation_list" model="ir.ui.view">
+            <field name="name">test_emp.designation.list</field>
+            <field name="model">test_emp.designation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                    <field name="salary"/>
+                    <field name="currency_id"/>
+                </tree>
+
+            </field>
+        </record>
+        <!-- Employee Designation Form View -->
+        <record id="view_employee_designation_form" model="ir.ui.view">
+            <field name="name">test_emp.designation.form</field>
+            <field name="model">test_emp.designation</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id"/>
+                            <field name="salary"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Employee Designation Action -->
+        <record id="action_employee_designation_window" model="ir.actions.act_window">
+            <field name="name">Employee Designation</field>
+            <field name="res_model">test_emp.designation</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!-- Employee Designation Menu -->
+
+        <!-- Sale
+        <menuitem id="sale_employee_designation" name="Designation" parent="sale.menu_sale_config" sequence="20" action="action_employee_designation_window"/> -->
+    </data>
+</odoo>

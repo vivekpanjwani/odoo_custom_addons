@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="employee_report_template">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <!-- Header Section -->
+                    <div class="container mt-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title p-3 mb-2 bg-primary text-white">Employee Information</h4>
+                                        <div class="oe_structure">
+        <!--                                     <t t-if="o.image">
+                                                <img t-att-src="image_data_uri(o.image)" class="img-fluid" alt="Employee Image"/>
+                                            </t>
+         -->                                </div>
+                                        <p class="card-text">Employee Name: <span t-esc="o.name"/></p>
+                                        <p class="card-text">Gender: <span t-esc="o.gender"/></p>
+                                        <p class="card-text">Date of Birth: <span t-esc="o.dob"/></p>
+                                        <p class="card-text">Age: <span t-esc="o.age"/></p>
+                                        <p class="card-text">Address: <address t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-3">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title p-3 mb-2 bg-info text-white">Company Details</h4>
+                                        <p class="card-text">Employee Status: <span t-esc="o.tag_ids.name"/></p>
+                                        <p class="card-text">Joining Date: <span t-esc="o.joining_date"/></p>
+                                        <p class="card-text">Employee Code: <span t-esc="o.employee_code"/></p>
+                                        <p class="card-text">Designation: <span t-esc="o.designation_id.name"/></p>
+                                        <p class="card-text">Basic Salary: <span t-esc="o.basic_salary"/></p>
+                                        <p class="card-text">Gross Salary: <span t-esc="o.gross_salary"/></p>
+                                        <p class="card-text">Net Salary: <span t-esc="o.net_salary"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="report_employee">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                  <t t-call="emp.employee_report_template" t-lang="o.partner_id.lang"/>
+              </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Event Registration Form View -->
+        <record id="event_registration_form" model="ir.ui.view">
+            <field name="name">event.registration.form</field>
+            <field name="model">event.registration</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                        <button string="Confirm" name="button_confirm" type="object" attrs="{'invisible': ['|',('state', '=', 'cancelled'),('state', '=', 'confirmed')]}"/>
+                        <button string="Cancel" name="button_cancel" type="object" attrs="{'invisible': [('state', '=', 'cancelled')]}" confirm="Are You Sure"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="attendee_id"/>
+                            <field name="event_id"/>
+                            <field name="registration_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="event_registration_tree" model="ir.ui.view">
+            <field name="name">event.registration.tree</field>
+            <field name="model">event.registration</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="attendee_id"/>
+                    <field name="event_id"/>
+                    <field name="registration_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Event Attendee Action -->
+        <record id="event_registration_action" model="ir.actions.act_window">
+            <field name="name">Event Registration</field>
+            <field name="res_model">event.registration</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Designation Form View -->
+        <record id='view_designation_form' model='ir.ui.view'>
+            <field name="name">designation.designation.form</field>
+            <field name="model">designation.designation</field>
+            <field name="arch" type='xml'>
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="company"/>
+                            <field name="salary"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>  
+        </record>
+
+        <!-- Designation Tree -->
+        <record id='view_designation_tree' model='ir.ui.view'>
+            <field name="name">designation.designation.tree</field>
+            <field name="model">designation.designation</field>
+            <field name="arch" type='xml'>                
+                    <tree>
+                            <field name="name"/>
+                            <field name="company"/>
+                            <field name="salary"/>
+                            <field name="currency_id"/>
+                    </tree>               
+            </field>  
+        </record>
+
+
+        <!-- Tag Action  -->
+        <record id="action_designation" model="ir.actions.act_window">
+            <field name="name">Designation</field>
+            <field name="res_model">designation.designation</field>
+            <field name="view_mode">form,tree</field>
+        </record>
+        
+        
+    </data>
+</odoo>

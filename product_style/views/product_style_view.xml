@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    <record id="product_style_view" model="ir.ui.view">
+        <field name="name">product.style.tree</field>
+        <field name="model">product.style</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_product_view" model="ir.actions.act_window">
+        <field name="name">Product Style</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.style</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="product_style_menu" name="Product Style" parent="sale.product_menu_catalog" action="action_product_view"/>
+
+    </data>
+</odoo>

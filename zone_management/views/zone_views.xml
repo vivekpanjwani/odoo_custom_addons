@@ -1,0 +1,46 @@
+<odoo>
+    <!-- Tree -->
+    <record id="view_zone_tree" model="ir.ui.view">
+        <field name="name">zone.zone.tree</field>
+        <field name="model">zone.zone</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state_id" context="{'country_id': country_id, 'default_country_id': country_id}"/>
+                <field name="country_id"/>
+            </tree>
+        </field>
+    </record>
+    <!-- Form -->
+    <record id="view_zone_form" model="ir.ui.view">
+        <field name="name">zone.zone.form</field>
+        <field name="model">zone.zone</field>
+        <field name="arch" type="xml">
+            <form string="Zone">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="state_id" context="{'country_id': country_id, 'default_country_id': country_id}"/>
+                        <field name="country_id"/>
+                        <field name="zip_ids" widget="one2many_list">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Action to open the zone form view -->
+    <record id="action_zone_form" model="ir.actions.act_window">
+        <field name="name">Zones</field>
+        <field name="res_model">zone.zone</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu item for the zone form view -->
+    <menuitem id="menu_zone_form" name="Zones" action="action_zone_form" sequence="10" />
+</odoo>

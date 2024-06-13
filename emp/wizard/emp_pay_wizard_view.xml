@@ -1,0 +1,35 @@
+<odoo>
+<data>
+    <record id="view_emp_wizard_form" model="ir.ui.view">
+        <field name="name">emp.pay.wizard.form</field>
+        <field name="model">emp.pay.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Employee Wizard">
+                <group>
+                    <field name="partner_id"/>
+                    <field name="basic_salary"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="net_salary"/>
+                    <field name="gross_salary"/>
+                    <field name="commision"/>
+                    <field name="extra_allowances"/>
+                    <footer>
+                        <button name="product_bill" string="Create Bill Payslip" type="object"/>
+                    </footer>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Employee Wizard Action -->
+    <record id="action_open_wizard_new" model="ir.actions.act_window">
+        <field name="name">Employee Wizard</field>
+        <field name="res_model">emp.pay.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    </data>
+</odoo>

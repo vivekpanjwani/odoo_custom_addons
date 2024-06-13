@@ -1,0 +1,10 @@
+<odoo>
+    <record id="employee_bills_report" model="ir.actions.report">
+        <field name="name">Payslip Bill</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">emp.report_payslip</field>
+        <field name="report_file">emp.report_payslip</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

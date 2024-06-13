@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="menu_emp_form_new" model="website.menu">
+    	<field name="name">Employee Form</field>
+    	<field name="url">/employee_webform</field>
+    	<field name="parent_id" ref="website.main_menu"/>
+    	<field name="sequence">10</field>
+    </record>
+	<template id="employee_form" name="Employee Form">
+	    <t t-call="website.layout">
+	        <div>
+	            <div class="oe_structure mt-5 mb-5">
+	                <div class="container pt-5 pb-5 bg-light shadow rounded">
+	                    <form role="form" t-att-action="'/create/webemployee' if not employee_rec else '/update/webemployee/%d' % employee_rec.id" method="POST">
+	                        <h2 class="text-center text-info mb-4">Employee Form</h2>
+	                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+	                        <div class="row">
+	                            <div class="form-group col-md-6">
+	                                <label for="name" class="control-label">Employee Name</label>
+	                                <input type="text" name="name" id="name" t-att-value="employee_rec.name if employee_rec else ''" class="form-control" required="required" placeholder="Enter employee name"/>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="dob" class="control-label">Date Of Birth</label>
+	                                <input type="date" name="dob" t-att-value="employee_rec.dob if employee_rec else ''" id="dob" class="form-control" required="required"/>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="email" class="control-label">Email</label>
+	                                <input type="email" name="email" t-att-value="employee_rec.email if employee_rec else ''" id="email" class="form-control" placeholder="Enter email address"/>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="street" class="control-label">Street</label>
+	                                <input type="text" name="street" t-att-value="employee_rec.street if employee_rec else ''" id="street" class="form-control" placeholder="Enter street"/>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="street2" class="control-label">Street2</label>
+	                                <input type="text" name="street2" t-att-value="employee_rec.street2 if employee_rec else ''" id="street2" class="form-control" placeholder="Enter additional street info"/>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="city" class="control-label">City</label>
+	                                <select name="city" id="city" class="form-control link-style">
+	                                    <option value="">Select City</option>
+	                                    <t t-foreach="city_rec" t-as="city">
+	                                        <option t-att-value="city.id" t-att-selected="employee_rec and employee_rec.city.id == city.id"><t t-esc="city.name"/></option>
+	                                    </t>
+	                                </select>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="state_id" class="control-label">State</label>
+	                                <select name="state_id" id="state_id" class="form-control link-style">
+	                                    <option value="">Select State</option>
+	                                    <t t-foreach="state_rec" t-as="state">
+	                                        <option t-att-value="state.id" t-att-selected="employee_rec and employee_rec.state_id.id == state.id"><t t-esc="state.name"/></option>
+	                                    </t>
+	                                </select>
+	                            </div>
+	                            <div class="form-group col-md-6">
+	                                <label for="country_id" class="control-label">Country</label>
+	                                <select name="country_id" id="country_id" class="form-control link-style">
+	                                    <option value="">Select Country</option>
+	                                    <t t-foreach="country_rec" t-as="country">
+	                                        <option t-att-value="country.id" t-att-selected="employee_rec and employee_rec.country_id.id == country.id"><t t-esc="country.name"/></option>
+	                                    </t>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <div class="oe_login_buttons text-center mt-5">
+	                            <button type="submit" class="btn btn-success btn-lg" t-if="employee_rec">Update</button>
+	                            <button type="submit" class="btn btn-primary btn-lg" t-else="">Submit</button>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </t>
+	</template>
+
+	<record id="employee_success" model="website.page">
+		<field name="name">Thanks</field>
+		<field name="type">qweb</field>
+		<field name="url">/employee-thank-you</field> 
+		<field name="website_published">True</field>
+		<field name="key">emp.employee_success</field>
+		<field name="arch" type="xml">
+			<t name="Thanks" t-name="emp.employee_success">
+				<t t-call="website.layout">
+				<div id="wrap">
+					<div class="container">
+					<h1>Thanks!</h1>
+						<div class="row">
+							<div class="col-lg-8">
+								<div class="alert alert-success" role="status"> Employee Created Successfully.</div>
+								<br/>
+								<a href="/my/employees" class="btn btn-primary mt-3">
+	                                Go to Employee List
+	                            </a>
+							</div>
+						</div>
+					</div>
+				</div>
+				</t>
+			</t>
+		</field>
+	</record>
+
+    <record id="employee_update_success" model="website.page">
+        <field name="name">Thanks</field>
+        <field name="type">qweb</field>
+        <field name="url">/employee-thank-you</field>
+        <field name="website_published">True</field>
+        <field name="key">emp.employee_update_success</field>
+        <field name="arch" type="xml">
+            <t name="Thanks" t-name="emp.employee_update_success">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Thanks!</h1>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="alert alert-success" role="status">
+                                        Employee Details Updated Successfully.
+                                        <br/>
+                                        <a href="/my/employees" class="btn btn-primary mt-3">
+                                            Go to Employee List
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
+	<record id="access_denied" model="website.page">
+        <field name="name">Access Denied</field>
+        <field name="type">qweb</field>
+        <field name="url">/permission-denied</field>
+        <field name="website_published">True</field>
+        <field name="key">emp.access_denied</field>
+        <field name="arch" type="xml">
+            <t name="Access Denied" t-name="emp.access_denied">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Access Denied!</h1>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="alert alert-danger" role="status">
+                                        You don't have permission to create forms.
+                                        <br/>
+                                        <a href="/my/employees" class="btn btn-primary mt-3">
+                                            You can only update your form.
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+
+
+</odoo>

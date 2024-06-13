@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem
+            id="employee_menu_root"
+            name="Employee"
+            web_icon="employee_e,static/description/icon.png"
+
+            />
+
+        <menuitem
+            id="employee_menu_management_2"
+            name="Management"
+            parent="employee_menu_root"
+            sequence="10"
+            />
+
+        <menuitem
+            id="employee_menu_configuration"
+            name="Configuration"
+            parent="employee_menu_root"
+            sequence="10"
+            />
+
+        <menuitem
+            id="employee_menu_sub"
+            name="Employee"
+            parent="employee_menu_management_2"
+            sequence="20"
+            action="action_employee_window"
+              />
+        
+        <menuitem id="menu_employee_designation" 
+            name="Designation" 
+            parent="employee_menu_configuration" action="action_employee_designation_window" />
+
+        
+        <menuitem id="menu_tag_tags" name="Employee Tags" parent="employee_e.employee_menu_configuration" action="action_tag_tags"/>
+
+        <menuitem id="menu_employee_contract" parent="employee_menu_configuration" action="action_employee_contract_window" />
+     
+        <!-- <menuitem
+            id="employee_menu_personal1"
+            name="Personal Info"
+            parent="employee_menu_management_2"
+            sequence="20"
+            action="personal_info_action_window1"
+              /> -->
+
+        
+
+        <!-- <menuitem
+            id="sale_employee"
+            name="Employee"
+            parent="sale.menu_sale_config"
+            sequence="20"
+            action="action_employee_window"
+            /> -->
+    </data>
+</odoo>

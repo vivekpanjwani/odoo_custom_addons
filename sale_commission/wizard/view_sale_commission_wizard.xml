@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="view_sale_commission_wizard" model="ir.ui.view">
+            <field name="name">sale.commission.wizard</field>
+            <field name="model">sale.commission.details.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Sale Commission Details">
+                    <group>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
+                        <field name="reportby"/>
+                    </group>
+                    <footer>                        
+                        <button name="%(sale_commission_new)d" type="action" string="Print"/>
+                        <button name="action_generate_xlsv" type="object" string="Print Xls"/>             
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_sale_commission_details" model="ir.actions.act_window">
+            <field name="name">Sale Commission Details</field>
+            <field name="res_model">sale.commission.details.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_sale_commission" parent="account.account_reports_management_menu" name="Sale Commission Details" action="action_sale_commission_details" sequence="1"/>
+        
+    </data>
+</odoo>

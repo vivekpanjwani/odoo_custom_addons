@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Map View -->
+        <record id="res_partner_view_map" model="ir.ui.view">
+            <field name="name">res.partner.view.map</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <map res_partner="id"/>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="custom_view_emp_model_search" model="ir.ui.view">
+            <field name="name">emp.model.search</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <search string="Employee">
+                    <field name="name"/>
+                    <field name="designation_id"/>
+                    <field name="company_id"/>
+                    <field name="salary_id"/>
+                <!-- <filter string="My Employees" name="my_employees" domain="[('manager_id', '=', uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Manager" name="manager_id" domain="[]" context="{'group_by': 'manager_id'}"/>
+                </group> -->
+                </search>
+            </field>
+        </record>
+
+        <!-- Grid View -->
+        <record id="emp_model_grid_view" model="ir.ui.view">
+            <field name="name">emp.model.grid.view</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <grid string="Tasks Grid View">
+                    <field name="name" type="row"/>
+                    <field name="date" type="col">
+                        <range name="year" string="Year" span="year" step="month"/>
+                        <range name="month" string="Month" span="month" step="day"/>                        
+                    </field>
+                    <field name="employee_code" type="measure" />
+                </grid>
+            </field>
+        </record>
+
+        <!-- Cohort View -->
+        <record id="emp_model_cohort_view" model="ir.ui.view">
+            <field name="name">emp.model.cohort.view</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <cohort string="Employee Cohort" date_start="date_start" date_stop="date_stop" interval="week" mode="churn" sample="1">
+                    <field name="name" invisible="1"/>
+                </cohort>
+            </field>
+        </record>
+
+        <!-- Gantt View -->
+        <record id="emp_model_gantt" model="ir.ui.view">
+            <field name="name">emp.model.gantt</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <gantt
+                    plan="1"
+                    color="color"
+                    date_start="date_start"
+                    date_stop="date_stop"
+                    default_group_by="employee_code"
+                    default_scale="year">
+                    <field name="name"/>
+                    <field name="states"/>
+                    <templates>
+                        <div t-name="gantt-popover">
+                            <div><strong>State — </strong><t t-out="color[1]"/></div>
+                            <div class="col-2 px-0 text-nowrap"><t t-out="userTimezoneStartDate.format('l LT ')"/><i class="fa fa-long-arrow-right" title="Arrow"/><t t-out="userTimezoneStopDate.format(' l LT')"/></div>
+                        </div>
+                    </templates>
+                </gantt>
+            </field>
+        </record>
+
+        <!-- Employee Activity View -->
+        <record id="view_employee_activity" model="ir.ui.view">
+            <field name="name">emp.model.activity</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <activity string="Employee Activity">
+                    <templates>
+                        <div t-name="activity-box">
+                            <div>
+                                <field name="name" widget="text" display="full"/>
+                            </div>
+                        </div>
+                    </templates>
+                </activity>
+            </field>
+        </record>
+
+        <!-- Employee Graph -->
+        <record id="view_employee_graph" model="ir.ui.view">
+            <field name="name">emp.model.graph</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <graph string="Employee Graph" sample="1" type="pie" order="asc">
+                    <field name="designation_id"/>
+                    <field name="state_id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Employee Pivot View -->
+        <record id="view_employee_pivot" model="ir.ui.view">
+            <field name="name">emp.model.pivot</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <pivot string="Employee Info" sample="1">
+                    <field name="marital_status" type="row"/>
+                    <field name="state_id" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Employee Calendar View-->
+        <record id="view_employee_calendar" model="ir.ui.view">
+            <field name="name">emp.model.calendar</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <calendar string="Employee Calendar" date_start="dob" date_stop="marriage_date">
+                    <field name="name"/>
+                    <field name="dob"/>
+                    <field name="marriage_date"/>
+                </calendar>
+            </field>
+        </record>
+        
+        <!-- Emp Kanban View -->
+         <record id="view_employee_kanban" model="ir.ui.view">
+            <field name="name">emp.model.kanban</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type="xml">
+                <kanban class="o_hr_employee_kanban" js_class="hr_employee_kanban" sample="1">
+                    <field name="image" />
+                    <field name="name" />
+                    <field name="designation_id" />
+                    <field name="email" />
+                    <field name="phone" />
+                    <field name="states" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags"/>
+                        <templates>
+                            <!-- <progressbar field="state" colors='{"draft": "red", "confirmed": "orange", "done": "green"}'/> -->
+                                <t t-name="kanban-box">
+                                    <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_hr_kanban_record">
+                                        <field name="image" class="o_kanban_image_fill_left d-block" preview_image="image_128" widget="image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                                        <div class="oe_kanban_details">
+                                            <div class="o_kanban_record_top">
+                                                <div class="o_kanban_record_headings">
+                                                    <strong class="o_kanban_record_title">
+                                                        <field name="name" placeholder="Employee's Name"/>                                   
+                                                    </strong>
+                                                    <span  class="o_kanban_record_subtitle"><field name="designation_id"/></span>
+                                                </div>
+                                            </div>
+                                            <ul>
+                                                <li class="o_text_overflow"><field name="email"/></li>
+                                                <li class="o_force_ltr"><field name="phone"/></li>
+                                                <!-- <li><field name="attendance" widget="progressbar" /></li> -->
+                                            </ul>
+                                        </div>
+                                        <div class="oe_kanban_content o_hr_employee_kanban_bottom position-absolute bottom-0 start-0 end-0 me-2 pe-none">
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left"/>
+                                                <div class="oe_kanban_bottom_right float-end pe-auto">
+                                                    <div class="hr_activity_container mb-1 me-n1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                        </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Emp Tree View -->
+        <record id='view_emp_tree' model='ir.ui.view'>
+            <field name="name">emp.model.tree</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type='xml'>
+                <tree>
+                    <field name="name"/>
+                    <field name="employee_code"/>
+                    <field name="gender"/>
+                    <field name="blood_group" optional="show"/>
+                    <field name="age" optional="hide"/>
+                    <field name="manager_id"/>
+                    <field name="dob"/>
+                    <field name="street" optional="hide"/>
+                    <field name="street2" optional="hide"/>
+                    <field name="city" optional="hide"/>
+                    <field name="state_id" />
+                    <field name="country_id"/>
+                    <field name="email"/>
+                    <field name="marital_status"/>
+                    <field name="marriage_date" optional="hide"/>
+                    <field name="document_id"/>                   
+                </tree>
+            </field>  
+        </record>
+
+        <!--Emp Form View -->
+        <record id='view_emp_form' model='ir.ui.view'>
+            <field name="name">emp.model.form</field>
+            <field name="model">emp.model</field>
+            <field name="arch" type='xml'>
+                <form>
+                    <header>
+                        <field name="states" widget="statusbar" statusbar_visible="new,probation,employee,relieved"/>
+                        <field name="states" widget="statusbar" statusbar_visible="notice period,relieved" attrs="{'invisible': ['|', ('states','!=','notice period'), ('states','!=','relieved')]}"/> 
+                        <field name="joined" invisible="1"/>
+                        <button name='set_cancel' string="Cancel" type="object" class="oe_highlight" attrs="{'invisible': [('released_date', '=', False)]}"/>
+                        <button name="set_notice_period" string="Set Notice Period" type="object" class="oe_highlight" attrs="{'invisible': [('released_date', '=', False)]}"/>
+                        <button name="set_probation" type="object" string="Joined" class="oe_highlight" attrs="{'invisible': [('joining_date', '=', False)]}"/>
+                        <button name="button_send_assessment_email" string="Send Assessment Email" type="object" class="oe_highlight" attrs="{'invisible': [('states','!=','employee')]}"/>
+                        <button name="%(action_open_wizard_new)d" string="Create bill as a payslip" type="action" />
+                        <button name="%(employee_report_action_new)d" string="Print" type="action"/>
+                    </header>
+
+                    <sheet class="oe_avatar">
+                        <div>
+                            <div class="oe_button_box" name="button_box">
+                                <button name="payment_action" type="object"
+                                        string="Payslip Bills" class="oe_stat_button"
+                                        icon="fa-money" context="{'partner_id': partner_id}">
+                                    <field name="payslip_bill_count" widget="statinfo"/>
+                                </button>
+                            </div>
+                                <field name="image" widget="image" class="oe_avatar" nolabel="1"/>
+                                <h1><field name="name" nolabel="1" placeholder="Enter Your Name"/></h1>
+                                <h2><field name="employee_code" nolabel="1"/></h2>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}" placeholder="Tags"/>
+
+                                <group>
+                                    <!-- <field name="attendance" widget="progressbar"/> -->
+                                    <field name="partner_id_readonly" invisible="1"/>
+                                    <field name="partner_id" attrs="{'readonly': [('partner_id_readonly', '=', True)]}"/>
+                                    <field name="basic_salary"/>
+                                    <field name="date_time"/> 
+                                    <field name="employee_count"/>                                   
+                                    <field name="joining_date" attrs="{'readonly': [('joined', '=', True)]}"/>
+                                    <field name="released_date" attrs="{'readonly': [('states', '=', 'relieved')]}"/>
+
+                                </group>
+                            </div>                            
+                            <notebook colspan="5">
+                                <page string="Personal Info" autofocus="autofocus">
+                                    <group>
+                                        <field name="gender" widget="radio"/>
+                                        <field name="blood_group"/>
+                                        <field name="dob" widget="date"/>
+                                        <field name="age"/>
+                                        <field name="signature"/>
+                                    </group>
+                                </page>
+                                <page string="Manager">
+                                    <form>
+                                        <group>
+                                          <field name="is_manager"/>
+                                          <field name="manager_id"/>
+                                        </group>                                          
+                                    </form>
+                                </page>
+                                <page string="Documents" >
+                                    <field name="document_id">
+                                        <tree editable="bottom">
+                                            <field name="name"/>
+                                            <field name="date"/>
+                                            <field name="attachment"/>
+                                        </tree>
+                                        <form>
+                                            <sheet>
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="date"/>
+                                                    <field name="attachment"/>
+                                                </group>
+                                            </sheet>    
+                                        </form>
+                                    </field>
+                                </page>
+                                <page string="Contact &amp; Address">
+                                    <group>
+                                        <group>
+                                            <span class="o_form_label o_td_label" name="address_name">
+                                                <b modifiers="{&quot;invisible&quot;: [[&quot;is_company&quot;, &quot;=&quot;, false]]}">Address</b>
+                                            </span>
+                                            <div class="o_address_format">
+                                                <!-- <field name="partner_id"/> -->
+
+                                                <!-- Country , state, and city using domain -->
+                                                <!-- <field name="country_id" />
+                                                <field name="state_id" domain="[('country_id', '=', country_id)]" />
+                                                <field name="city" domain="[('states', '=', state_id)]" /> -->
+
+                                                <!-- Using context and name_search method -->
+
+                                                <field name="street" placeholder="Street..." class="o_address_street" on_change="1" />
+                                                <field name="street2" placeholder="Street 2..." class="o_address_street" />
+                                                <!-- <field name="city" placeholder="City" class="o_address_city" on_change="1" /> -->
+                                                <!-- <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}" on_change="1" can_create="true" can_write="true"/> -->
+                                                <field name="city" context="{'state_id': state_id,'default_state_id': state_id}" placeholder="City" class="o_address_city" on_change="1"/>
+                                                <field name="state_id" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}" placeholder="State" class="o_address_state"/>
+                                                <field name="zip" placeholder="ZIP" class="o_address_zip" on_change="1" />
+                                                <div name="partner_address_country" class="d-flex justify-content-between">
+                                                    <field name="country_id" placeholder="Country" class="o_address_country"/>
+                                                    <!-- <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" on_change="1" can_create="true" can_write="true"/> -->
+                                                </div>
+                                            </div>
+                                        </group>  
+                                    </group>
+                                    <group>
+
+                                        <field name="email"/>
+                                        <field name="phone" widget="phone" string="India Mobile" context="{'default_country_code': 'IN'}"/>
+                                    </group>
+                                </page>
+                                <page string="Martial Status">
+                                    <group>
+                                        <field name="marital_status"/>
+                                        <field name="marriage_date" attrs="{'invisible': [('marital_status', '!=', 'Married')]}"/>
+                                    </group>
+                                </page>
+                                <page string="Company Details">
+                                    <group>
+                                        <field name="employee_code" />
+                                        <field name="designation_id"/>
+                                        <field name="company_id" attrs="{'invisible':[('designation_id', '=', False)]}"/>
+                                        <field name="salary_id" attrs="{'invisible':[('designation_id', '=', False)]}"/>
+                                    </group>
+                                </page>
+                                <page string="Contracts" >
+                                    <field name="emp_contract">
+                                        <tree>
+                                            <field name="name"/>
+                                            <field name="from_date"/>
+                                            <field name="to_date"/>
+                                        </tree>
+                                        <form>
+                                            <sheet>
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="from_date"/>
+                                                    <field name="to_date"/>
+                                                </group>
+                                            </sheet>
+                                                
+                                        </form>
+                                    </field>
+                                </page>
+                                <page string="Employee Salary">
+                                        <form>
+                                            <group>
+                                                <field name="partner_id"/>
+                                                <field name="basic_salary"/>
+                                                <field name="net_salary"/>
+                                                <field name="gross_salary"/>
+                                                <field name="commision"/>
+                                                <field name="extra_allowances"/>
+                                            </group>
+                                        </form>
+                                </page>
+                            </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>                  
+            </field>  
+        </record>
+
+
+        <!-- Emp Action  -->
+        <record id="action_emp_model" model="ir.actions.act_window">
+            <field name="name">Employee</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">emp.model</field>
+            <field name="view_mode">tree,form,kanban,calendar,pivot,graph,activity,cohort,gantt,grid,map</field>
+<!--             <field name="search_view_id" ref="custom_view_emp_model_search"/>
+            <field name="context">{'search_default_my_employees': 1}</field>
+ -->        </record>       
+
+
+       <!-- Parent Menu -->
+        <menuitem id="emp_menu" name="Employee" sequence="10" web_icon="emp,static/description/icon.png"/>
+        <!-- Menu 1 -->
+        <menuitem id="emp_management" name="Management" parent="emp_menu"/>
+
+        <!-- Menu 1  Submenu-->
+        <menuitem id="emp_manage_employee" name="Create Employee" parent="emp_management" action="action_emp_model"/>
+
+        <!-- Menu 2 -->
+        <menuitem id="emp_config" name="Configuration" groups="group_emp_manager_custom" parent="emp_menu"/>
+
+        <!-- <menuitem id="menu_emp_settings"
+            name="Settings"
+            action="action_emp_config_settings"
+            parent="emp_config"
+            
+            /> -->
+
+        <!-- Menu 2 Submenu-->
+        <menuitem id="emp_tag" name="Employee Tags" parent="emp_config" action="action_tag"/>
+
+        <!-- Menu 2 Submenu-->
+        <menuitem id="emp_designation" name="Designation" parent="emp_config" action="action_designation"/>
+
+        <menuitem id="menu_personal_info" name="Personal Info" parent="emp_management" action="action_personal_info"/>
+
+        <menuitem id="menu_contract" name="Contracts" parent="emp_config" action="action_employee_contract_window"/>
+
+        <menuitem id="menu_city" name="City" parent="emp_config" action="action_city"/>
+
+        <menuitem id="emp_data_export" name="Employee Date Export" parent="emp_config" action="action_open_emp_data"/>
+
+        <!-- Emp Module in Sale Config Menu -->
+        <menuitem id="custom_sale_config" name="Employee" parent="sale.menu_sale_config" action="action_emp_model"/>
+            
+
+    
+    </data>
+
+</odoo>

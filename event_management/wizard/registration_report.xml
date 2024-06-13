@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Registration Report View-->
+        <record id="view_registration_report_wizard" model="ir.ui.view">
+            <field name="name">registration.report.wizard.view</field>
+            <field name="model">registration.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Registration Report">
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <footer>
+                        <button name="action_generate" string="Print" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!--Wizard Registration Report Action-->
+        <record id="action_registration_report" model="ir.actions.act_window">
+            <field name="name">Registration Report </field>
+            <field name="res_model">registration.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Wizard Registration Report Menu-->
+        <menuitem id="registration_report_menu" parent="report_menu" name="Registration Report" action="action_registration_report"/>
+        
+    </data>
+</odoo>

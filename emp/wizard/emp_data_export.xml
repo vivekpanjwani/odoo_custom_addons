@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <!-- Employee Data Export View -->
+        <record id="view_emp_data_export" model="ir.ui.view">
+            <field name="name">emp.data.export.form</field>
+            <field name="model">emp.data.export</field>
+            <field name="arch" type="xml">
+                <form string="Employee Data Export">
+                    <group>
+                        <field name="before_date"/>
+                        <footer>
+                            <button name="action_generate" string="Generate Csv" type="object" class="oe_highlight"/>
+                            <button name="action_generate_xlsv" string="Generate Xls" type="object" class="oe_highlight"/>
+                        </footer>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Employee Data Export Action -->
+        <record id="action_open_emp_data" model="ir.actions.act_window">
+            <field name="name">Employee Data Export</field>
+            <field name="res_model">emp.data.export</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

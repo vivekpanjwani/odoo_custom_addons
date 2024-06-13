@@ -1,0 +1,18 @@
+<odoo>
+    <template id="custom_add_cart" inherit_id="website_sale.products_item">
+		    <xpath expr="//div[hasclass('product_price')]" position="inside">   
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" t-nocache="The csrf token must always be up to date."/>
+		        <div>
+		            <a>
+		            	<input type="hidden" class="product_id" name="product_id" t-att-value="product.product_variant_id.id"/>
+		            	<button type="action" action="shop/cart/update" class="btn btn-primary add-to-cart btn-sm" data-product-id="t-product-id">
+		                	<i class="fa fa-cart-plus"/> Add to Cart
+		            	</button>
+		            	<div class="mb-2" t-if="product.detailed_type != 'service'">Quantity: 
+							<span t-esc="min([int(variant.qty_available) for variant in product.product_variant_ids])"/>
+						</div>
+		            </a>
+		        </div>
+		    </xpath>
+    </template>
+</odoo>

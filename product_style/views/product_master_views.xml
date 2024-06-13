@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_tree_view" model="ir.ui.view">
+        <field name="name">product.template.product.tree</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='taxes_id']" position="after">
+                <field name="product_style_id"/>
+                <field name="last_manufacture_date"/>
+                <field name="new_manufacture_date"/>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page string="Branch Product">
+                    <field name="branch_product"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

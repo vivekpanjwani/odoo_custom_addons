@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Category-->
+        <record id="security_event" model="ir.module.category">
+            <field name="name">Event Management</field>
+            <field name="description">Manage Your Events</field>
+        </record>
+
+        <!-- Attendee Category -->
+        <record id="group_attendee" model="res.groups">
+            <field name="name">Attendee Only</field>
+            <field name="category_id" ref="event_management.security_event"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Organizer Category -->
+        <record id="group_organizer" model="res.groups">
+            <field name="name">Organizer</field>
+            <field name="category_id" ref="event_management.security_event"/>
+            <field name="implied_ids" eval="[(4, ref('group_attendee'))]"/>
+        </record>
+
+        <!-- Manager Category -->
+        <record id="group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="event_management.security_event"/>
+            <field name="implied_ids" eval="[(4, ref('group_organizer'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')),(4, ref('base.user_admin'))]" />
+        </record>
+
+        <!-- Record Rule for Manager -->
+        <record id="record_rule_manager" model="ir.rule">
+            <field name="name">Event Manager Record Rule</field>
+            <field name="model_id" ref="event_management.model_event_registration"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('group_manager'))]"/>
+        </record>
+
+        <!-- Record Rule for Attendee -->
+        <record id="record_rule_attendee" model="ir.rule">
+            <field name="name">Employee Attendee Record Rule</field>
+            <field name="model_id" ref="event_management.model_event_registration"/>
+            <field name="domain_force">[('attendee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_attendee'))]"/>
+        </record>
+    </data>
+</odoo> 

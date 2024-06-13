@@ -1,0 +1,13 @@
+<odoo>
+    <record id="product_supplierinfo_tree_view_inherit" model="ir.ui.view">
+        <field name="name">product.supplierinfo.tree.view.inherit</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='delay']" position="after">
+                <button name="open_po" type="object" string="View PO" class="oe_highlight"/>
+            </xpath>
+        </field>
+    </record>
+    
+</odoo>

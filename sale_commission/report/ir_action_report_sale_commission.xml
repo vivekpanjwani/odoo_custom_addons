@@ -1,0 +1,9 @@
+<odoo>
+    <record id="sale_commission_new" model="ir.actions.report">
+        <field name="name">Sale Commission</field>
+        <field name="model">sale.commission.details.wizard</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">sale_commission.report_commission</field>
+        <field name="report_file">sale_commission.report_commission</field>
+    </record>
+</odoo>

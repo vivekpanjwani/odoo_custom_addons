@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Event Attendee Form View -->
+        <record id="event_attendee_form" model="ir.ui.view">
+            <field name="name">event.attendee.form</field>
+            <field name="model">event.attendee</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="email"/>
+                            <field name="phone" widget="phone"/>
+                            <field name="user_id"/>
+                            <field name="event_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="event_attendee_tree" model="ir.ui.view">
+            <field name="name">event.attendee.tree</field>
+            <field name="model">event.attendee</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone" widget="phone"/>
+                    <field name="user_id"/>
+                    <field name="event_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Event Attendee Action -->
+        <record id="event_attendee_action" model="ir.actions.act_window">
+            <field name="name">Event Attendee</field>
+            <field name="res_model">event.attendee</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <record id="product.product_category_3" model="product.category">
+            <field name="parent_id" ref="product.product_category_1"/>
+            <field name="name">Services</field>
+        </record>
+
+        <record id="my_employee_payslip" model="product.product">
+            <field name="name">Payslip</field>
+            <field name="categ_id" ref="product.product_category_3"/>
+            <field name="standard_price">20.5</field>
+            <field name="list_price">30.75</field>
+            <field name="detailed_type">service</field>
+        </record>
+    </data>
+</odoo>
