@@ -18,6 +18,7 @@ class EventAttendee(models.Model):
         comodel_name="res.users",
         readonly=True,
         )
+
     # ----Many2many Field ----
     event_ids = fields.Many2many(
         comodel_name='event.event',
