@@ -1,0 +1,21 @@
+git config --global user.name "vivekpanjwani"
+git config --global user.email "200020116012ait@gmail.com"
+git config --list
+pwd
+mkdir workspace
+cd workspace
+git clone https://github.com/<username>/<repository>.git
+cd directoryname -->where to push
+git add . -->if all to push or file name
+git status -->to check
+git commit -m "Updated Code" --> Message to commit
+git push origin main---> Not working after set-url it will work
+
+-----IMP------
+
+git remote set-url origin https://<token>@github.com/<username>/<repo>
+git remote set-url origin https://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@github.com/vivekpanjwani/odoo_addons
+
+--------------
+git push origin main --> Pushes whole files to github
+
